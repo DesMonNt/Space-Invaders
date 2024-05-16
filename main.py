@@ -1,5 +1,9 @@
 import json
 from game import Game
+import pygame as pg
+
+WINDOW_WIDTH = 800
+WINDOW_HEIGHT = 600
 
 
 def load_max_score():
@@ -17,7 +21,10 @@ def save_max_score(score):
 
 
 def execute_game():
-    game = Game(800, 600, 20)
+    pg.init()
+    display = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+    pg.display.set_caption("Space Invaders Score: 0")
+    game = Game(display, WINDOW_WIDTH, WINDOW_HEIGHT, 20)
     max_score = load_max_score()
     game.run()
 
