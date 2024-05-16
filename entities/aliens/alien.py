@@ -1,7 +1,7 @@
-from entity import Entity
-from hit_box import HitBox
-from player_bullet import PlayerBullet
-from vec2 import Vec2
+from entities.entity import Entity
+from physics.hit_box import HitBox
+from projectiles.player_bullet import PlayerBullet
+from physics.vec2 import Vec2
 
 
 class Alien(Entity):
@@ -13,9 +13,5 @@ class Alien(Entity):
         return isinstance(obj, PlayerBullet)
 
     def shoot(self):
-        from alien_bullet import AlienBullet
+        from projectiles.alien_bullet import AlienBullet
         return AlienBullet(self.position, self.__direction, self.speed)
-
-
-if __name__ == '__main__':
-    pass

@@ -1,6 +1,6 @@
-from entity import Entity
-from hit_box import HitBox
-from vec2 import Vec2
+from entities.entity import Entity
+from physics.hit_box import HitBox
+from physics.vec2 import Vec2
 
 
 class PlayerBullet(Entity):

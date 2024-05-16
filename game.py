@@ -1,9 +1,9 @@
 import pygame as pg
-from mystery_ship import MysteryShip
-from player import Player
-from bunker import Bunker
-from alien_wave import AlienWave
-from vec2 import Vec2
+from entities.mystery_ship import MysteryShip
+from entities.player.player import Player
+from entities.bunker import Bunker
+from entities.aliens.alien_wave import AlienWave
+from physics.vec2 import Vec2
 
 
 class Game:

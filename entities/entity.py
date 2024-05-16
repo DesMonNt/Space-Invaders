@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from vec2 import Vec2
+from physics.vec2 import Vec2
 
 
 class Entity(ABC):

@@ -1,8 +1,8 @@
-from alien_bullet import AlienBullet
-from player_bullet import PlayerBullet
-from entity import Entity
-from hit_box import HitBox
-from vec2 import Vec2
+from projectiles.alien_bullet import AlienBullet
+from projectiles.player_bullet import PlayerBullet
+from entities.entity import Entity
+from physics.hit_box import HitBox
+from physics.vec2 import Vec2
 
 
 class Bunker(Entity):

@@ -1,6 +1,6 @@
 from random import random
-from alien import Alien
-from vec2 import Vec2
+from entities.aliens.alien import Alien
+from physics.vec2 import Vec2
 
 
 class AlienWave:
