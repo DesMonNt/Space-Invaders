@@ -11,13 +11,11 @@ class Game:
     WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)
     
-    def __init__(self, window_width, window_height, block_size):
-        pg.init()
-        pg.display.set_caption("Space Invaders Score: 0")
+    def __init__(self, window, window_width, window_height, block_size):
         self.window_width = window_width
         self.window_height = window_height
         self.block_size = block_size
-        self.window = pg.display.set_mode((self.window_width, self.window_height))
+        self.window = window
 
         self.player = Player(Vec2(self.window_width // 2, self.window_height - self.block_size), self.block_size)
         self.mystery_ship = MysteryShip(Vec2(self.block_size, self.block_size), 20)
@@ -36,6 +34,10 @@ class Game:
         self.wave_cooldown = 0
         self.player_cooldown = 0
 
+    def update_score(self, points):
+        self.score += points
+        pg.display.set_caption(f"Space Invaders Score: {self.score}")
+
     def reload_wave(self):
         self.wave = AlienWave(
             Vec2(self.block_size, self.block_size),
@@ -49,7 +51,7 @@ class Game:
             for alien in self.wave.aliens:
                 if alien.is_intersecting(bullet):
                     if alien.dead_in_conflict(bullet):
-                        self.score += 2
+                        self.update_score(2)
                         self.wave.aliens.remove(alien)
                     if bullet.dead_in_conflict(alien):
                         self.bullets.remove(bullet)
@@ -69,7 +71,7 @@ class Game:
 
             if self.mystery_ship.is_intersecting(bullet):
                 if self.mystery_ship.dead_in_conflict(bullet):
-                    self.score += 100
+                    self.update_score(100)
                     self.mystery_ship.is_active = False
                 if bullet.dead_in_conflict(bullet):
                     self.bullets.remove(bullet)
@@ -91,6 +93,7 @@ class Game:
             self.mystery_ship.move(self.mystery_ship.direction * self.mystery_ship.speed)
 
     def run(self):
+        font = pg.font.get_default_font()
         while not self.is_game_over:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
@@ -142,7 +145,6 @@ class Game:
             if self.wave.aliens[-1].position.y > 4 * self.window_height // 5:
                 self.is_game_over = True
 
-            pg.display.set_caption(f"Space Invaders Score: {self.score}")
             pg.display.update()
 
             pg.time.wait(50)
