@@ -1,8 +1,8 @@
 from random import random
-from entity import Entity
-from hit_box import HitBox
-from player_bullet import PlayerBullet
-from vec2 import Vec2
+from entities.entity import Entity
+from physics.hit_box import HitBox
+from projectiles.player_bullet import PlayerBullet
+from physics.vec2 import Vec2
 
 
 class MysteryShip(Entity):

@@ -1,7 +1,7 @@
-from entity import Entity
-from alien import Alien
-from hit_box import HitBox
-from vec2 import Vec2
+from entities.entity import Entity
+from entities.aliens.alien import Alien
+from physics.hit_box import HitBox
+from physics.vec2 import Vec2
 
 
 class AlienBullet(Entity):

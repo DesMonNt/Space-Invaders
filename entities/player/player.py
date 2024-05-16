@@ -1,8 +1,8 @@
-from player_bullet import PlayerBullet
-from alien_bullet import AlienBullet
-from hit_box import HitBox
-from entity import Entity
-from vec2 import Vec2
+from projectiles.player_bullet import PlayerBullet
+from projectiles.alien_bullet import AlienBullet
+from physics.hit_box import HitBox
+from entities.entity import Entity
+from physics.vec2 import Vec2
 
 
 class Player(Entity):
