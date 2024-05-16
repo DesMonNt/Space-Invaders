@@ -1,4 +1,4 @@
-import math
+from math import sqrt, sin, cos
 
 
 class Vec2:
@@ -25,7 +25,7 @@ class Vec2:
         return self.x == other.x and self.y == other.y
 
     def length(self):
-        return math.sqrt(self.dot(self))
+        return sqrt(self.dot(self))
 
     def normalize(self):
         length = self.length()
@@ -37,6 +37,12 @@ class Vec2:
 
     def dot(self, other):
         return self.x * other.x + self.y * other.y
+
+    def rotate(self, angle):
+        x = self.x * cos(angle) - self.y * sin(angle)
+        y = self.x * sin(angle) + self.y * cos(angle)
+
+        return Vec2(x, y)
 
 
 if __name__ == '__main__':
