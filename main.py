@@ -23,12 +23,12 @@ def save_max_score(score):
 def execute_game():
     pg.init()
     display = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-    pg.display.set_caption("Space Invaders Score: 0")
-    game = Game(display, WINDOW_WIDTH, WINDOW_HEIGHT, 20)
+    game = Game(display, WINDOW_WIDTH, WINDOW_HEIGHT, 20, is_fresh=False)
+    pg.display.set_caption(f"Space Invaders Score: {game.game_state.score}")
     max_score = load_max_score()
     game.run()
 
-    score = game.score
+    score = game.game_state.score
 
     if score >= max_score:
         max_score = score
