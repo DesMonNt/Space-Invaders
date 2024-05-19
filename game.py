@@ -1,8 +1,8 @@
 import pygame as pg
 from entities.mystery_ship import MysteryShip
-from entities.player.player import Player
+from entities.player import Player
 from entities.bunker import Bunker
-from entities.aliens.alien_wave import AlienWave
+from alien_wave import AlienWave
 from physics.vec2 import Vec2
 
 

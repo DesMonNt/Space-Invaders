@@ -1,5 +1,5 @@
 from random import random
-from entities.aliens.alien import Alien
+from entities.alien import Alien
 from physics.vec2 import Vec2
 
 

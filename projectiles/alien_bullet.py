@@ -1,5 +1,5 @@
 from entities.entity import Entity
-from entities.aliens.alien import Alien
+from entities.alien import Alien
 from physics.hit_box import HitBox
 from physics.vec2 import Vec2
 
