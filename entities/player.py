@@ -15,7 +15,3 @@ class Player(Entity):
 
     def shoot(self):
         return PlayerBullet(self.position, self.direction, self.speed)
-
-
-if __name__ == '__main__':
-    pass

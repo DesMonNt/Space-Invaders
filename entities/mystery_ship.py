@@ -35,7 +35,3 @@ class MysteryShip(Entity):
         else:
             self.direction = Vec2(-1, 0)
             self.move_to(Vec2(800 - 20, 30))
-
-
-if __name__ == '__main__':
-    pass

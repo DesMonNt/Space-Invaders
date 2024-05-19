@@ -9,7 +9,7 @@ WINDOW_HEIGHT = 600
 def load_max_score():
     try:
         with open("score.json", 'r') as file:
-            return json.load(file)
+            return json.load(file)['score']
 
     except FileNotFoundError:
         return 0
@@ -17,7 +17,7 @@ def load_max_score():
 
 def save_max_score(score):
     with open("score.json", 'w') as file:
-        json.dump(score, file)
+        json.dump({'score': score}, file)
 
 
 def execute_game():
@@ -30,7 +30,7 @@ def execute_game():
 
     score = game.score
 
-    if score > max_score:
+    if score >= max_score:
         max_score = score
         save_max_score(max_score)
 

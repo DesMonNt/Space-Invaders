@@ -22,7 +22,3 @@ class Entity(ABC):
     @abstractmethod
     def dead_in_conflict(self, obj) -> bool:
         pass
-
-
-if __name__ == '__main__':
-    pass
