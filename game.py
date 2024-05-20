@@ -35,6 +35,27 @@ class Game:
         if len(self.game_state.aliens) != 0:
             self.wave.aliens = self.game_state.aliens
 
+    def pause_game(self):
+        self.game_state.aliens = self.wave.aliens
+        self.game_state.save()
+
+        is_paused = True
+        font = pg.font.Font("game_assets/menu_font.ttf", 30)
+        name_text = font.render("GAME PAUSED", True, Game.WHITE)
+        name_rectangle = name_text.get_rect(center=(self.window_width // 2, self.window_height // 2))
+        self.window.blit(name_text, name_rectangle)
+        while is_paused:
+            for event in pg.event.get():
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_ESCAPE:
+                        is_paused = False
+                    if event.key == pg.K_q:
+                        is_paused = False
+                        self.is_game_over = True
+                pg.display.update()
+        self.load_saved_game()
+        self.run()
+
     def load_fresh_game(self):
         game_state = GameState()
         game_state.player = Player(Vec2(self.window_width // 2, self.window_height - self.block_size), 1)
@@ -101,6 +122,8 @@ class Game:
             pg.draw.circle(self.window, Game.WHITE, (bunker.position.x, bunker.position.y), self.block_size)
 
         for bullet in self.game_state.bullets:
+            if not (0 < bullet.position.y < self.window_height) or not (0 < bullet.position.x < self.window_width):
+                self.game_state.bullets.remove(bullet)
             pg.draw.circle(self.window, Game.WHITE, (bullet.position.x, bullet.position.y), self.block_size // 4)
             bullet.move(bullet.direction * bullet.speed * self.block_size)
 
@@ -121,6 +144,9 @@ class Game:
                     if event.key == pg.K_q:
                         self.game_state.aliens = self.wave.aliens
                         self.game_state.save()
+                        self.is_game_over = True
+                    elif event.key == pg.K_ESCAPE:
+                        self.pause_game()
                     elif event.key == pg.K_LEFT:
                         dx -= 1
                     elif event.key == pg.K_RIGHT:
@@ -149,9 +175,9 @@ class Game:
 
             self.wave_cooldown += 1
 
-            if self.wave_cooldown % 10 == 0:
+            if self.wave_cooldown % 15 == 0:
                 self.wave.move_horizontal()
-            if self.wave_cooldown % 120 == 0:
+            if self.wave_cooldown % 180 == 0:
                 self.wave.move_down()
 
             self.draw_objects()
