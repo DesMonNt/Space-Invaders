@@ -22,6 +22,7 @@ class Game:
             self.game_state = self.load_fresh_game()
         else:
             self.game_state = self.load_saved_game()
+
         self.wave_cooldown = 0
         self.player_cooldown = 0
         self.is_game_over = False
@@ -32,6 +33,7 @@ class Game:
             self.window_height,
             self.block_size
         )
+
         if len(self.game_state.aliens) != 0:
             self.wave.aliens = self.game_state.aliens
 
