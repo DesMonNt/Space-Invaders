@@ -6,7 +6,7 @@ from physics.vec2 import Vec2
 class AlienWave:
     def __init__(self, start_position, width, height, block_size):
         self.aliens = AlienWave.__fill_aliens(start_position, width, height, block_size)
-        self.__shoot_rate = 0.0002
+        self.__shoot_rate = 0.001
         self.__screen_size = (width, height)
         self.__block_size = block_size
         self.__direction = Vec2(1, 0)
@@ -21,7 +21,7 @@ class AlienWave:
             if alien.position.x <= self.__block_size:
                 self.__direction = Vec2(1, 0)
 
-        delta = Vec2(self.__direction.x, self.__direction.y) * self.aliens[0].speed
+        delta = Vec2(self.__direction.x, self.__direction.y) * self.aliens[0].speed * self.__block_size
 
         for alien in self.aliens:
             alien.move(delta)
@@ -30,7 +30,7 @@ class AlienWave:
         if self.aliens.__len__() == 0:
             return
 
-        delta = Vec2(0, 1) * self.aliens[0].speed
+        delta = Vec2(0, 1) * self.aliens[0].speed * self.__block_size
 
         for alien in self.aliens:
             alien.move(delta)
@@ -62,6 +62,6 @@ class AlienWave:
                 if x > width or y > height // 1.5:
                     continue
 
-                aliens.append(Alien(Vec2(x, y), block_size))
+                aliens.append(Alien(Vec2(x, y), 1))
 
         return aliens
