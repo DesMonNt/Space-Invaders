@@ -16,7 +16,7 @@ class StartMenu:
 
     @staticmethod
     def get_sized_font(font_size):
-        return pg.font.Font("game_assets/menu_font.ttf", font_size)
+        return pg.font.Font("assets/menu_font.ttf", font_size)
 
     def run(self):
         self.display.fill(StartMenu.BLACK)

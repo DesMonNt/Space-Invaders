@@ -9,7 +9,7 @@ class PauseMenu:
     def __init__(self, window, window_width, window_height):
         self.is_game_paused = True
         self.is_game_closed = False
-        self.font = pg.font.Font("game_assets/menu_font.ttf", 30)
+        self.font = pg.font.Font("assets/menu_font.ttf", 30)
         self.window = window
         self.window_width = window_width
         self.window_height = window_height

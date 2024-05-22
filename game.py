@@ -1,4 +1,6 @@
 import pygame as pg
+
+import projectiles.player_bullet
 from entities.mystery_ship import MysteryShip
 from entities.player import Player
 from entities.bunker import Bunker
@@ -54,7 +56,7 @@ class Game:
     def load_fresh_game(self):
         game_state = GameState()
         game_state.player = Player(Vec2(self.window_width // 2, self.window_height - self.block_size), 1)
-        game_state.mystery_ship = MysteryShip(Vec2(self.block_size, self.block_size), 1)
+        game_state.mystery_ship = MysteryShip(Vec2(self.block_size, self.block_size * 3), 0.5)
         game_state.bunkers = \
             [Bunker(Vec2(i * self.window_width // 5, 4 * self.window_height // 5)) for i in range(1, 5)]
         game_state.lives = 3
@@ -70,11 +72,10 @@ class Game:
 
     def update_score(self, points):
         self.game_state.score += points
-        pg.display.set_caption(f"Space Invaders Score: {self.game_state.score}")
 
     def reload_wave(self):
         self.wave = AlienWave(
-            Vec2(self.block_size, self.block_size),
+            Vec2(self.block_size, self.block_size + self.window_height // 10),
             self.window_width,
             self.window_height,
             self.block_size
@@ -110,27 +111,59 @@ class Game:
                 if bullet.dead_in_conflict(bullet):
                     self.game_state.bullets.remove(bullet)
 
+    def get_bunker_sprite(self, bunker):
+        if bunker.health > 7:
+            return pg.image.load("assets/bunker/bunker.png")
+        elif bunker.health > 2:
+            return pg.image.load("assets/bunker/scratched_bunker.png")
+        return pg.image.load("assets/bunker/damaged_bunker.png")
+
     def draw_objects(self):
+
+        font = pg.font.Font("assets/menu_font.ttf", 15)
+        game_over_text = font.render(f"SCORE:{self.game_state.score}", True, Game.WHITE)
+        game_over_rectangle = game_over_text.get_rect(center=(self.block_size * 4, self.block_size))
+        self.window.blit(game_over_text, game_over_rectangle)
+
+        lives_image = pg.image.load("assets/player.png")
+        for i in range(self.game_state.lives):
+            self.window.blit(lives_image, lives_image.get_rect(
+                center=(self.window_width - ((self.block_size + 10) * i + self.block_size * 4), self.block_size)))
+
         for alien in self.wave.aliens:
-            pg.draw.circle(self.window, Game.WHITE, (alien.position.x, alien.position.y), self.block_size // 2)
+            alien_image = pg.image.load("assets/alien.png")
+            self.window.blit(alien_image, alien_image.get_rect(center=(alien.position.x, alien.position.y)))
+            # pg.draw.circle(self.window, Game.WHITE, (alien.position.x, alien.position.y), self.block_size // 2)
 
         for bunker in self.game_state.bunkers:
-            pg.draw.circle(self.window, Game.WHITE, (bunker.position.x, bunker.position.y), self.block_size)
+            bunker_image = self.get_bunker_sprite(bunker)
+            self.window.blit(bunker_image, bunker_image.get_rect(center=(bunker.position.x, bunker.position.y)))
+            # pg.draw.circle(self.window, "green", (bunker.position.x, bunker.position.y), self.block_size)
 
         for bullet in self.game_state.bullets:
             if not (0 < bullet.position.y < self.window_height) or not (0 < bullet.position.x < self.window_width):
                 self.game_state.bullets.remove(bullet)
-            pg.draw.circle(self.window, Game.WHITE, (bullet.position.x, bullet.position.y), self.block_size // 4)
+            if isinstance(bullet, projectiles.player_bullet.PlayerBullet):
+                bullet_image = pg.image.load("assets/player_bullet.png")
+            else:
+                bullet_image = pg.image.load("assets/alien_bullet.png")
+            self.window.blit(bullet_image, bullet_image.get_rect(center=(bullet.position.x, bullet.position.y)))
+            # pg.draw.circle(self.window, Game.WHITE, (bullet.position.x, bullet.position.y), self.block_size // 4)
             bullet.move(bullet.direction * bullet.speed * self.block_size)
 
         if self.game_state.mystery_ship.is_active:
-            pg.draw.circle(self.window, Game.WHITE,
-                           (self.game_state.mystery_ship.position.x, self.game_state.mystery_ship.position.y),
-                           self.block_size // 2)
+            mystery_image = pg.image.load("assets/mystery.png ")
+            self.window.blit(mystery_image, mystery_image.get_rect(
+                center=(self.game_state.mystery_ship.position.x,
+                        self.game_state.mystery_ship.position.y)))
+            # pg.draw.circle(self.window, Game.WHITE,
+            #                (self.game_state.mystery_ship.position.x, self.game_state.mystery_ship.position.y),
+            #                self.block_size // 2)
             self.game_state.mystery_ship.move(
                 self.game_state.mystery_ship.direction * self.game_state.mystery_ship.speed * self.block_size)
 
     def run(self):
+
         while not (self.is_game_over or self.is_game_closed):
             for event in pg.event.get():
                 if event.type == pg.QUIT:
@@ -161,9 +194,11 @@ class Game:
 
             self.window.fill(Game.BLACK)
 
-            pg.draw.circle(self.window, Game.WHITE,
-                           (self.game_state.player.position.x, self.game_state.player.position.y),
-                           self.block_size // 2)
+            player_image = pg.image.load("assets/player.png")
+            self.window.blit(player_image, player_image.get_rect(
+                center=(self.game_state.player.position.x, self.game_state.player.position.y)))
+            # pg.draw.circle(self.window, Game.WHITE, (self.game_state.player.position.x,
+            # self.game_state.player.position.y), self.block_size // 2)
 
             self.game_state.bullets += self.wave.get_aliens_bullets()
 

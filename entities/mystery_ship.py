@@ -31,7 +31,7 @@ class MysteryShip(Entity):
     def get_new_spawn_point(self):
         if random() < 0.5:
             self.direction = Vec2(1, 0)
-            self.move_to(Vec2(20, 30))
+            self.move_to(Vec2(20, 50))
         else:
             self.direction = Vec2(-1, 0)
-            self.move_to(Vec2(800 - 20, 30))
+            self.move_to(Vec2(800 - 20, 50))
