@@ -31,7 +31,6 @@ def execute_game():
     menu.run()
 
     game = Game(display, WINDOW_WIDTH, WINDOW_HEIGHT, 20, menu.is_fresh_game)
-    pg.display.set_caption(f"Space Invaders Score: {game.game_state.score}")
     max_score = load_max_score()
     game.run()
 

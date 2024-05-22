@@ -17,12 +17,12 @@ class GameOverMenu:
         self.display.fill(GameOverMenu.BLACK)
         pg.display.set_caption("Game Over")
 
-        font = pg.font.Font("game_assets/menu_font.ttf", 50)
+        font = pg.font.Font("assets/menu_font.ttf", 50)
         game_over_text = font.render("GAME OVER", True, GameOverMenu.WHITE)
         game_over_rectangle = game_over_text.get_rect(center=(self.width // 2, self.height // 4))
         self.display.blit(game_over_text, game_over_rectangle)
 
-        font = pg.font.Font("game_assets/menu_font.ttf", 15)
+        font = pg.font.Font("assets/menu_font.ttf", 15)
         current_score_text = font.render(f"YOUR SCORE: {self.score}", True, GameOverMenu.WHITE)
         current_score_rectangle = game_over_text.get_rect(
             center=(self.width // 2 * 1.25, self.height // 4 * 2))
