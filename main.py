@@ -1,6 +1,6 @@
 import json
 from game import Game
-from start_menu import StartMenu
+from menus.start_menu import StartMenu
 import pygame as pg
 
 WINDOW_WIDTH = 800
@@ -12,7 +12,7 @@ BLACK = (0, 0, 0)
 
 def load_max_score():
     try:
-        with open("score.json", 'r') as file:
+        with open("json/score.json", 'r') as file:
             return json.load(file)['score']
 
     except FileNotFoundError:
@@ -20,7 +20,7 @@ def load_max_score():
 
 
 def save_max_score(score):
-    with open("score.json", 'w') as file:
+    with open("json/score.json", 'w') as file:
         json.dump({'score': score}, file)
 
 

@@ -5,6 +5,8 @@ from entities.bunker import Bunker
 from alien_wave import AlienWave
 from physics.vec2 import Vec2
 from game_state import GameState
+from menus.pause_menu import PauseMenu
+from menus.game_over_menu import GameOverMenu
 
 
 class Game:
@@ -26,6 +28,7 @@ class Game:
         self.wave_cooldown = 0
         self.player_cooldown = 0
         self.is_game_over = False
+        self.is_game_closed = False
 
         self.wave = AlienWave(
             Vec2(self.block_size, self.block_size + self.window_height // 10),
@@ -41,20 +44,10 @@ class Game:
         self.game_state.aliens = self.wave.aliens
         self.game_state.save()
 
-        is_paused = True
-        font = pg.font.Font("game_assets/menu_font.ttf", 30)
-        name_text = font.render("GAME PAUSED", True, Game.WHITE)
-        name_rectangle = name_text.get_rect(center=(self.window_width // 2, self.window_height // 2))
-        self.window.blit(name_text, name_rectangle)
-        while is_paused:
-            for event in pg.event.get():
-                if event.type == pg.KEYDOWN:
-                    if event.key == pg.K_ESCAPE:
-                        is_paused = False
-                    if event.key == pg.K_q:
-                        is_paused = False
-                        self.is_game_over = True
-                pg.display.update()
+        pause = PauseMenu(self.window, self.window_width, self.window_height)
+        pause.run()
+        self.is_game_closed = pause.is_game_closed
+
         self.load_saved_game()
         self.run()
 
@@ -64,11 +57,12 @@ class Game:
         game_state.mystery_ship = MysteryShip(Vec2(self.block_size, self.block_size), 1)
         game_state.bunkers = \
             [Bunker(Vec2(i * self.window_width // 5, 4 * self.window_height // 5)) for i in range(1, 5)]
-        game_state.lives = 3
+        game_state.lives = 1
 
         return game_state
 
-    def load_saved_game(self):
+    @staticmethod
+    def load_saved_game():
         game_state = GameState()
         game_state.load()
 
@@ -137,16 +131,16 @@ class Game:
                 self.game_state.mystery_ship.direction * self.game_state.mystery_ship.speed * self.block_size)
 
     def run(self):
-        while not self.is_game_over:
+        while not (self.is_game_over or self.is_game_closed):
             for event in pg.event.get():
                 if event.type == pg.QUIT:
-                    self.is_game_over = True
+                    self.is_game_closed = True
                 if event.type == pg.KEYDOWN:
                     dx = 0
                     if event.key == pg.K_q:
                         self.game_state.aliens = self.wave.aliens
                         self.game_state.save()
-                        self.is_game_over = True
+                        self.is_game_closed = True
                     elif event.key == pg.K_ESCAPE:
                         self.pause_game()
                     elif event.key == pg.K_LEFT:
@@ -190,7 +184,7 @@ class Game:
             if len(self.wave.aliens) == 0:
                 self.reload_wave()
 
-            if self.game_state.lives < 0:
+            if self.game_state.lives <= 0:
                 self.is_game_over = True
 
             if self.wave.aliens[-1].position.y > 4 * self.window_height // 5:
@@ -199,5 +193,9 @@ class Game:
             pg.display.update()
 
             pg.time.wait(50)
+
+        if self.is_game_over:
+            game_over = GameOverMenu(self.window, self.window_width, self.window_height, self.game_state.score)
+            game_over.run()
 
         pg.quit()
