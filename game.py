@@ -57,7 +57,7 @@ class Game:
         game_state.mystery_ship = MysteryShip(Vec2(self.block_size, self.block_size), 1)
         game_state.bunkers = \
             [Bunker(Vec2(i * self.window_width // 5, 4 * self.window_height // 5)) for i in range(1, 5)]
-        game_state.lives = 1
+        game_state.lives = 3
 
         return game_state
 
