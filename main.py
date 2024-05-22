@@ -41,6 +41,8 @@ def execute_game():
         max_score = score
         save_max_score(max_score)
 
+    pg.quit()
+
 
 if __name__ == '__main__':
     execute_game()

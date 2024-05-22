@@ -30,7 +30,7 @@ class GameOverMenu:
 
         with open('json/score.json', 'r') as f:
             high_score = json.load(f)['score']
-        high_score_text = font.render(f"HIGH SCORE: {high_score}", True, GameOverMenu.WHITE)
+        high_score_text = font.render(f"HIGH SCORE: {max(self.score, high_score)}", True, GameOverMenu.WHITE)
         high_score_rectangle = game_over_text.get_rect(
             center=(self.width // 2 * 1.25, self.height // 4 * 2.5))
         self.display.blit(high_score_text, high_score_rectangle)
@@ -45,4 +45,3 @@ class GameOverMenu:
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_q:
                         is_here = False
-        pg.quit()
