@@ -27,12 +27,12 @@ class GameState:
             'lives': self.lives
         }
 
-        with open('game_state.json', 'w') as f:
+        with open('json/game_state.json', 'w') as f:
             json.dump(game_state, f)
 
     def load(self):
 
-        with open('game_state.json', 'r') as f:
+        with open('json/game_state.json', 'r') as f:
             game_state = json.load(f)
             self.player = entities.player.Player(Vec2(game_state['player'][0], game_state['player'][1]), 1)
             self.bunkers = [GameState.__load_bunker_state(bunker_state) for bunker_state in game_state['bunkers']]

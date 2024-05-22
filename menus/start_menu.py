@@ -39,12 +39,14 @@ class StartMenu:
 
         while self.is_in_menu:
             for event in pg.event.get():
-                if event.type == pg.QUIT or event.type == pg.K_RIGHT:
-                    self.is_in_menu = False
+                if event.type == pg.QUIT:
+                    pg.quit()
                 if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_q:
+                        pg.quit()
                     if event.key == pg.K_UP or event.key == pg.K_DOWN:
                         self.selected_button += 1
-                    if event.key == pg.K_e:
+                    if event.key == pg.K_SPACE:
                         self.is_in_menu = False
 
             if self.selected_button % 2 == 0:
