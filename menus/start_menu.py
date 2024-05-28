@@ -29,13 +29,18 @@ class StartMenu:
         new_game_text = font.render("START NEW GAME", True, StartMenu.WHITE)
         continue_text = font.render("CONTINUE", True, StartMenu.WHITE)
 
+        font = StartMenu.get_sized_font(self.width // 60)
+        credits_text = font.render("COPYRIGHT @2024 JERBOA_TEAM", True, StartMenu.WHITE)
+
         name_rectangle = name_text.get_rect(center=(self.width // 2, self.height // 4))
         new_game_rectangle = new_game_text.get_rect(center=(self.width // 2, self.height // 4 * 2))
         continue_rectangle = continue_text.get_rect(center=(self.width // 2, self.height // 4 * 2.5))
+        credits_rectangle = credits_text.get_rect(center=(self.width // 2, self.height // 4 * 3.5))
 
         self.display.blit(name_text, name_rectangle)
         self.display.blit(new_game_text, new_game_rectangle)
         self.display.blit(continue_text, continue_rectangle)
+        self.display.blit(credits_text, credits_rectangle)
 
         while self.is_in_menu:
             for event in pg.event.get():
