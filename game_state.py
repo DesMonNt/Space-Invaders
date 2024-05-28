@@ -1,6 +1,7 @@
 import json
 import entities
 import projectiles
+from os import path, makedirs
 from physics.vec2 import Vec2
 from projectiles.player_bullet import PlayerBullet
 
@@ -26,6 +27,9 @@ class GameState:
             'score': self.score,
             'lives': self.lives
         }
+
+        if not path.exists('json'):
+            makedirs('json')
 
         with open('json/game_state.json', 'w') as f:
             json.dump(game_state, f)
