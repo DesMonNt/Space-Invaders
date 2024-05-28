@@ -9,6 +9,7 @@ from physics.vec2 import Vec2
 from game_state import GameState
 from menus.pause_menu import PauseMenu
 from menus.game_over_menu import GameOverMenu
+import pathlib
 
 
 class Game:
@@ -50,7 +51,7 @@ class Game:
         pause.run()
         self.is_game_closed = pause.is_game_closed
 
-        self.load_saved_game()
+        self.game_state = self.load_saved_game()
         self.run()
 
     def load_fresh_game(self):
@@ -63,11 +64,12 @@ class Game:
 
         return game_state
 
-    @staticmethod
-    def load_saved_game():
+    def load_saved_game(self):
         game_state = GameState()
+        if not pathlib.Path('json/game_state.json').is_file():
+            game_state = self.load_fresh_game()
+            game_state.save()
         game_state.load()
-
         return game_state
 
     def update_score(self, points):
@@ -111,7 +113,8 @@ class Game:
                 if bullet.dead_in_conflict(bullet):
                     self.game_state.bullets.remove(bullet)
 
-    def get_bunker_sprite(self, bunker):
+    @staticmethod
+    def get_bunker_sprite(bunker):
         if bunker.health > 7:
             return pg.image.load("assets/bunker/bunker.png")
         elif bunker.health > 2:
@@ -176,9 +179,9 @@ class Game:
                         self.is_game_closed = True
                     elif event.key == pg.K_ESCAPE:
                         self.pause_game()
-                    elif event.key == pg.K_LEFT:
+                    elif event.key == pg.K_LEFT and self.game_state.player.position.x > 0:
                         dx -= 1
-                    elif event.key == pg.K_RIGHT:
+                    elif event.key == pg.K_RIGHT and self.game_state.player.position.x < self.window_width:
                         dx += 1
                     elif event.key == pg.K_SPACE:
                         if self.player_cooldown == 0:
@@ -222,7 +225,7 @@ class Game:
             if self.game_state.lives <= 0:
                 self.is_game_over = True
 
-            if self.wave.aliens[-1].position.y > 4 * self.window_height // 5:
+            if self.wave.aliens[-1].position.y > 3.5 * self.window_height // 5:
                 self.is_game_over = True
 
             pg.display.update()

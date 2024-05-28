@@ -27,6 +27,7 @@ def save_max_score(score):
 def execute_game():
     pg.init()
     display = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+    pg.display.set_icon(pg.image.load("assets/icon.png"))
     menu = StartMenu(display, WINDOW_WIDTH, WINDOW_HEIGHT)
     menu.run()
 
