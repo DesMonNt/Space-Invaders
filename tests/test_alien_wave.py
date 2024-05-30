@@ -25,10 +25,6 @@ class TestAlienWave(unittest.TestCase):
         bullets = self.alien_wave.get_aliens_bullets()
         self.assertEqual(len(bullets), 0)
 
-        # mock_random.return_value = 0.0005
-        # bullets = self.alien_wave.get_aliens_bullets()
-        # self.assertEqual(len(bullets), 1)
-
     def test_move_horizontal(self):
         self.alien_wave.aliens = [MagicMock(spec=Alien, position=Vec2(800, 50), speed=1)]
         self.alien_wave.move_horizontal()

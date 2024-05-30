@@ -30,15 +30,6 @@ class TestGame(unittest.TestCase):
         self.assertFalse(self.game.is_game_closed)
         self.assertIsInstance(self.game.wave, AlienWave)
 
-    # @patch('game.PauseMenu')
-    # @patch('game.GameState.save')
-    # @patch('game.Game.load_saved_game')
-    # def test_pause_game(self, mock_load_saved_game, mock_save, mock_pause_menu):
-    #     mock_pause_menu.return_value.is_game_closed = False
-    #     self.game.pause_game()
-    #     mock_save.assert_called_once()
-    #     mock_load_saved_game.assert_called_once()
-
     def test_load_fresh_game(self):
         game_state = self.game.load_fresh_game()
         self.assertIsInstance(game_state.player, Player)
