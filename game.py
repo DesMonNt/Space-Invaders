@@ -1,15 +1,15 @@
 import pygame as pg
 
-import projectiles.player_bullet
+from projectiles.player_bullet import PlayerBullet
 from entities.mystery_ship import MysteryShip
 from entities.player import Player
 from entities.bunker import Bunker
 from alien_wave import AlienWave
 from physics.vec2 import Vec2
 from game_state import GameState
-from menus.pause_menu import PauseMenu
-from menus.game_over_menu import GameOverMenu
-import pathlib
+from pause_menu import PauseMenu
+from game_over_menu import GameOverMenu
+from os import path, makedirs
 
 
 class Game:
@@ -66,7 +66,11 @@ class Game:
 
     def load_saved_game(self):
         game_state = GameState()
-        if not pathlib.Path('json/game_state.json').is_file():
+        if not path.exists('json'):
+            makedirs('json')
+        if not path.isfile('json/game_state.json'):
+            with open('json/game_state.json', 'w'):
+                pass
             game_state = self.load_fresh_game()
             game_state.save()
         game_state.load()
@@ -123,7 +127,7 @@ class Game:
 
     def draw_objects(self):
 
-        font = pg.font.Font("assets/menu_font.ttf", 15)
+        font = pg.font.Font("tests/assets/menu_font.ttf", 15)
         game_over_text = font.render(f"SCORE:{self.game_state.score}", True, Game.WHITE)
         game_over_rectangle = game_over_text.get_rect(center=(self.block_size * 4, self.block_size))
         self.window.blit(game_over_text, game_over_rectangle)
@@ -146,7 +150,7 @@ class Game:
         for bullet in self.game_state.bullets:
             if not (0 < bullet.position.y < self.window_height) or not (0 < bullet.position.x < self.window_width):
                 self.game_state.bullets.remove(bullet)
-            if isinstance(bullet, projectiles.player_bullet.PlayerBullet):
+            if isinstance(bullet, PlayerBullet):
                 bullet_image = pg.image.load("assets/player_bullet.png")
             else:
                 bullet_image = pg.image.load("assets/alien_bullet.png")
@@ -222,7 +226,7 @@ class Game:
             if len(self.wave.aliens) == 0:
                 self.reload_wave()
 
-            if self.game_state.lives <= 0:
+            if self.game_state.lives == 0:
                 self.is_game_over = True
 
             if self.wave.aliens[-1].position.y > 3.5 * self.window_height // 5:

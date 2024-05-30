@@ -1,6 +1,8 @@
 from random import random
 from entities.alien import Alien
 from physics.vec2 import Vec2
+import unittest
+from unittest.mock import patch, MagicMock
 
 
 class AlienWave:

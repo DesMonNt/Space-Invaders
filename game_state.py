@@ -1,9 +1,12 @@
 import json
-import entities
-import projectiles
 from os import path, makedirs
 from physics.vec2 import Vec2
+from entities.player import Player
+from entities.bunker import Bunker
+from entities.alien import Alien
+from entities.mystery_ship import MysteryShip
 from projectiles.player_bullet import PlayerBullet
+from projectiles.alien_bullet import AlienBullet
 
 
 class GameState:
@@ -38,9 +41,9 @@ class GameState:
 
         with (open('json/game_state.json', 'r') as f):
             game_state = json.load(f)
-            self.player = entities.player.Player(Vec2(game_state['player'][0], game_state['player'][1]), 1)
+            self.player = Player(Vec2(game_state['player'][0], game_state['player'][1]), 1)
             self.bunkers = [GameState.__load_bunker_state(bunker_state) for bunker_state in game_state['bunkers']]
-            self.aliens = [entities.alien.Alien(Vec2(alien_state[0], alien_state[1]), 1)
+            self.aliens = [Alien(Vec2(alien_state[0], alien_state[1]), 1)
                            for alien_state in game_state['aliens']]
             self.mystery_ship = GameState.__load_mystery_ship_state(game_state['mystery_ship'])
             self.bullets = [GameState.__load_bullet_state(bullet_state) for bullet_state in game_state['bullets']]
@@ -57,7 +60,7 @@ class GameState:
 
     @staticmethod
     def __load_bunker_state(state):
-        bunker = entities.bunker.Bunker(Vec2(state['position'][0], state['position'][1]))
+        bunker = Bunker(Vec2(state['position'][0], state['position'][1]))
         bunker.health = state['health']
 
         return bunker
@@ -72,7 +75,7 @@ class GameState:
 
     @staticmethod
     def __load_mystery_ship_state(state):
-        mystery_ship = entities.mystery_ship.MysteryShip(Vec2(state['position'][0], state['position'][1]), 1)
+        mystery_ship = MysteryShip(Vec2(state['position'][0], state['position'][1]), 1)
         mystery_ship.direction = Vec2(state['direction'][0], state['direction'][1])
         mystery_ship.is_active = state['is_active']
 
@@ -94,10 +97,10 @@ class GameState:
     @staticmethod
     def __load_bullet_state(state):
         if state['owner'] == 'player':
-            bullet = projectiles.player_bullet.PlayerBullet(Vec2(state['position'][0], state['position'][1]),
+            bullet = PlayerBullet(Vec2(state['position'][0], state['position'][1]),
                                                             Vec2(state['direction'][0], state['direction'][1]), 1)
         else:
-            bullet = projectiles.alien_bullet.AlienBullet(Vec2(state['position'][0], state['position'][1]),
+            bullet = AlienBullet(Vec2(state['position'][0], state['position'][1]),
                                                           Vec2(state['direction'][0], state['direction'][1]), 1)
 
         return bullet

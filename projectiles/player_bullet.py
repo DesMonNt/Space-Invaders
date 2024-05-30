@@ -8,9 +8,10 @@ class PlayerBullet(Entity):
         super().__init__(position, HitBox(position - Vec2(10, 10), position + Vec2(10, 10)), speed)
         self.direction = direction
 
+    def __eq__(self, other):
+        return (self.position == other.position and self.hit_box == other.hit_box and self.direction == other.direction
+                and self.speed == other.speed)
+
     def dead_in_conflict(self, obj) -> bool:
         return True
 
-
-if __name__ == '__main__':
-    pass
