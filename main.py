@@ -1,6 +1,6 @@
 import json
 from game import Game
-from menus.start_menu import StartMenu
+from start_menu import StartMenu
 import pygame as pg
 
 WINDOW_WIDTH = 800

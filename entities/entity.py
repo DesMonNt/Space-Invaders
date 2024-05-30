@@ -8,6 +8,12 @@ class Entity(ABC):
         self.hit_box = hit_box
         self.speed = speed
 
+    def __eq__(self, other):
+        if not isinstance(other, Entity):
+            return False
+
+        return self.position == other.position and self.hit_box == other.hit_box and self.speed == other.speed
+
     def move(self, delta: Vec2):
         self.position += delta
         self.hit_box.move(delta)

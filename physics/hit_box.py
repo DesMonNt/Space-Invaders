@@ -3,6 +3,12 @@ class HitBox:
         self.top_left = top_left
         self.bottom_right = bottom_right
 
+    def __eq__(self, other):
+        if not isinstance(other, HitBox):
+            return False
+
+        return self.top_left == other.top_left and self.bottom_right == other.bottom_right
+
     def is_intersecting(self, obj):
         x1_min, x1_max = self.top_left.x, self.bottom_right.x
         x2_min, x2_max = obj.top_left.x, obj.bottom_right.x
